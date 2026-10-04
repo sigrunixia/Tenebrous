@@ -6,7 +6,7 @@ Tenebrous was initially inspired by [Poimandres](https://github.com/drcmda/poima
 
 ## Themes
 
-- [Tenebrous Obsidian](https://github.com/sigrunixia/Tenebrous-Obsidian), the theme for Obsidian
+- [Tenebrous Obsidian](https://github.com/sigrunixia/Tenebrous-Obsidian), the theme for [Obsidian](https://obsidian.md/).
 - [Tenebrous Zed](https://github.com/sigrunixia/Tenebrous-Zed), the theme for Zed
 
 ## Colors

@@ -5,16 +5,20 @@
   <zed>/themes/tenebrous.json    templates/zed.template.json with {{name}} and
                                  {{name:AA}} (alpha hex suffix) filled in
 
-Repo paths come from OBSIDIAN_REPO and ZED_REPO.
+  palette.svg                    swatch image of every colour, shown in the README
+
+Repo paths come from OBSIDIAN_REPO and ZED_REPO, set in .env and passed by build.sh.
 """
 import os
 import json, re, sys
 from pathlib import Path
 
 root = Path(__file__).resolve().parent
-dev = Path(os.environ.get("DEVELOPER", "/Users/Signia/Developer"))
-obsidian = Path(os.environ.get("OBSIDIAN_REPO", dev / "Tenebrous-Obsidian"))
-zed = Path(os.environ.get("ZED_REPO", dev / "Tenebrous-Zed"))
+try:
+    obsidian = Path(os.environ["OBSIDIAN_REPO"])
+    zed = Path(os.environ["ZED_REPO"])
+except KeyError as e:
+    sys.exit(f"{e.args[0]} is not set. Run this through build.sh, or set it in .env.")
 pal = json.loads((root / "palette.json").read_text())
 flat = {k: v for g in pal.values() for k, v in g.items()}
 
@@ -31,3 +35,33 @@ def fill(m):
 tpl = (root / "templates/zed.template.json").read_text()
 (zed / "themes").mkdir(exist_ok=True)
 (zed / "themes/tenebrous.json").write_text(re.sub(r"\{\{([^}]+)\}\}", fill, tpl))
+
+def luminance(h):
+    r, g, b = (int(h[i:i + 2], 16) / 255 for i in (1, 3, 5))
+    lin = [c / 12.92 if c <= 0.03928 else ((c + 0.055) / 1.055) ** 2.4 for c in (r, g, b)]
+    return 0.2126 * lin[0] + 0.7152 * lin[1] + 0.0722 * lin[2]
+
+cols, w, h, gap, pad = 5, 176, 96, 12, 24
+groups = [("Core", pal["core"]), ("Zed only", pal["zed"])]
+y = pad
+body = []
+for title, colours in groups:
+    body.append(f'<text x="{pad}" y="{y + 14}" fill="#a6accd" font-size="16" font-weight="700">{title}</text>')
+    y += 28
+    for i, (name, hexv) in enumerate(colours.items()):
+        x = pad + (i % cols) * (w + gap)
+        yy = y + (i // cols) * (h + gap)
+        ink = "#14161b" if luminance(hexv) > 0.25 else "#e2e7f2"
+        body.append(
+            f'<rect x="{x}" y="{yy}" width="{w}" height="{h}" rx="8" fill="{hexv}" stroke="#242838"/>'
+            f'<text x="{x + 12}" y="{yy + 36}" fill="{ink}" font-size="15" font-weight="700">{name}</text>'
+            f'<text x="{x + 12}" y="{yy + 58}" fill="{ink}" font-size="13">{hexv}</text>'
+        )
+    y += ((len(colours) + cols - 1) // cols) * (h + gap) + 12
+width = pad * 2 + cols * w + (cols - 1) * gap
+svg = (
+    f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{y + pad - 12}" '
+    f'viewBox="0 0 {width} {y + pad - 12}" font-family="ui-monospace, Menlo, monospace">'
+    f'<rect width="100%" height="100%" fill="#14161b"/>' + "".join(body) + "</svg>\n"
+)
+(root / "palette.svg").write_text(svg)

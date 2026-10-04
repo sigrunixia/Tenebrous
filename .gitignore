@@ -20,3 +20,4 @@ package-lock.json
 # Mac
 .DS_Store
 ._*
+!.env.example

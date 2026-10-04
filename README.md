@@ -1,6 +1,6 @@
 # Tenebrous
 
-Tenebrous was initially inspired by [Poimandres](https://github.com/drcmda/poimandres-theme) and has grown into something more unique. Tenebrous is a dark color scheme. The background is a near-black blue and the text is a soft grey-purple. Amber is the main accent, used for links and headings. Blues, purples and greens cover the rest, with red and pink used sparingly.
+Tenebrous was initially inspired by [Poimandres](https://github.com/drcmda/poimandres-theme) and has grown into something more unique. Tenebrous is a dark color scheme. The background is a near-black blue and the text is a soft grey-purple. Amber is the main accent, used for links and headings. Blues, purples and greens cover the rest, with red and pink used sparingly. (But it is very pretty!)
 
 ![The Tenebrous palette](palette.svg)
 
@@ -11,9 +11,12 @@ Tenebrous was initially inspired by [Poimandres](https://github.com/drcmda/poima
 
 ## Colors
 
-Each row says where a color shows up, and the color name is its key in `palette.json`. Contrast is measured against Background (`#14161b`) with the WCAG formula. AA needs 4.5 to 1 for normal text and AAA needs 7 to 1.
 
-Every text color passes AA on Background except Faint text (`comment`), which is 3.92 to 1. It passes for large text and interface parts, but not for normal body text, and it is only used for things that are meant to recede.
+Each row says where a color shows up, and the color name is its key in `palette.json`. The contrast of each is measured against Background (`#14161b`) with the WCAG formula. AA needs 4.5 to 1 for normal text and AAA needs 7 to 1.
+
+Every text color passes AA on Background except Faint text (`comment`), which is 3.92 to 1. It passes for large text and interface parts, but not for normal body text, and it is only used for things that are meant to recede, so I considered it acceptable.
+
+I did not require AAA, because that much contrast is not something I need yet, and designing for it leads to many sites looking the same.
 
 ### Backgrounds
 
@@ -120,6 +123,7 @@ Copy `.env.example` to `.env` and point it at your repos and vault. The script r
 
 - [Poimandres](https://github.com/drcmda/poimandres-theme) by drcmda, the original theme that inspired this
 - [Poimandres for Obsidian](https://github.com/yoGhastly/poimandres-obsidian) by yoGhastly, where the Obsidian theme started
+- [Dbarenholz](https://github.com/dbarenholz) for dealing with me on [halcyon-obsidian](https://github.com/dbarenholz/halcyon-obsidian)
 
 ## Disclaimer
 

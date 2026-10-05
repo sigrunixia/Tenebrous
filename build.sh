@@ -108,7 +108,10 @@ if [ "$PUB_JS" = 1 ]; then
   need VAULT
   # build-index.js bakes the vault data into src/scripts/baked-data.ts, then
   # runs the repo's build-publish.sh (tsc and esbuild) to write publish.js.
-  node "$OBSIDIAN_REPO/build-index.js" "$VAULT" >/dev/null
+  # Cover images only go to the live site when pushing.
+  COVER_FLAG=""
+  if [ "$PUSH" = 1 ]; then COVER_FLAG="--publish-covers"; fi
+  node "$OBSIDIAN_REPO/build-index.js" "$VAULT" $COVER_FLAG >/dev/null
   echo "Built publish.js"
   if [ "$DEPLOY" = 1 ]; then
     deploy_check

@@ -80,13 +80,15 @@ fi
 
 if [ "$THEME" = 1 ]; then
   sass_build main.scss theme.css
-  sass_build main-landing-snippet.scss landing-preview.css
-  sass_build main-contact-snippet.scss contact-preview.css
+  sass_build snippets/main-landing-snippet.scss snippets/landing-preview.css
+  sass_build snippets/main-contact-snippet.scss snippets/contact-preview.css
+  sass_build snippets/main-trips-snippet.scss snippets/trips-preview.css
   if [ "$DEPLOY" = 1 ]; then
     deploy_check
-    cp "$OBSIDIAN_REPO/theme.css"           "$VAULT/.obsidian/themes/Tenebrous/theme.css"
-    cp "$OBSIDIAN_REPO/landing-preview.css" "$VAULT/.obsidian/snippets/landing-preview.css"
-    cp "$OBSIDIAN_REPO/contact-preview.css" "$VAULT/.obsidian/snippets/contact-preview.css"
+    cp "$OBSIDIAN_REPO/theme.css"                    "$VAULT/.obsidian/themes/Tenebrous/theme.css"
+    cp "$OBSIDIAN_REPO/snippets/landing-preview.css" "$VAULT/.obsidian/snippets/landing-preview.css"
+    cp "$OBSIDIAN_REPO/snippets/contact-preview.css" "$VAULT/.obsidian/snippets/contact-preview.css"
+    cp "$OBSIDIAN_REPO/snippets/trips-preview.css"   "$VAULT/.obsidian/snippets/trips-preview.css"
     echo "Deployed theme and snippets to $VAULT"
   fi
 fi
@@ -104,7 +106,8 @@ fi
 if [ "$PUB_JS" = 1 ]; then
   need OBSIDIAN_REPO
   need VAULT
-  cp "$OBSIDIAN_REPO/src/publish.js" "$OBSIDIAN_REPO/publish.js"
+  # build-index.js bakes the vault data into src/scripts/baked-data.ts, then
+  # runs the repo's build-publish.sh (tsc and esbuild) to write publish.js.
   node "$OBSIDIAN_REPO/build-index.js" "$VAULT" >/dev/null
   echo "Built publish.js"
   if [ "$DEPLOY" = 1 ]; then

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Generate the palette-driven files from shared/palette.json.
 
-  <obsidian>/src/_palette.scss   SCSS variables for the Obsidian theme (core colours)
+  <obsidian>/src/lib/_palette.scss  SCSS variables for the Obsidian theme (core colours)
   <zed>/themes/tenebrous.json    templates/zed.template.json with {{name}} and
                                  {{name:AA}} (alpha hex suffix) filled in
 
@@ -24,7 +24,7 @@ flat = {k: v for g in pal.values() for k, v in g.items()}
 
 scss = "// Generated from shared/palette.json by shared/build-palette.py. Do not edit.\n"
 scss += "".join(f"${k}: {v};\n" for k, v in pal["core"].items())
-(obsidian / "src/_palette.scss").write_text(scss)
+(obsidian / "src/lib/_palette.scss").write_text(scss)
 
 def fill(m):
     name, _, alpha = m.group(1).partition(":")

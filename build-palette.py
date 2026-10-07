@@ -2,6 +2,7 @@
 """Generate the palette-driven files from shared/palette.json.
 
   <obsidian>/src/lib/_palette.scss  SCSS variables for the Obsidian theme (core colours)
+  <site>/theme/src/_site-palette.scss  SCSS variables for the Quartz site's own colours (the site group)
   <zed>/themes/tenebrous.json    templates/zed.template.json with {{name}} and
                                  {{name:AA}} (alpha hex suffix) filled in
 
@@ -13,7 +14,7 @@
 
   palette.svg                    swatch image of every colour, shown in the README
 
-Repo paths come from OBSIDIAN_REPO, ZED_REPO, GHOSTTY_REPO, FISH_REPO and STARSHIP_REPO, set in .env and passed by build.sh.
+Repo paths come from OBSIDIAN_REPO, SITE_REPO, ZED_REPO, GHOSTTY_REPO, FISH_REPO and STARSHIP_REPO, set in .env and passed by build.sh.
 """
 import os
 import json, re, sys
@@ -21,6 +22,7 @@ from pathlib import Path
 
 root = Path(__file__).resolve().parent
 obsidian = Path(os.environ["OBSIDIAN_REPO"]) if os.environ.get("OBSIDIAN_REPO") else None
+site = Path(os.environ["SITE_REPO"]) if os.environ.get("SITE_REPO") else None
 zed = Path(os.environ["ZED_REPO"]) if os.environ.get("ZED_REPO") else None
 ghostty = Path(os.environ["GHOSTTY_REPO"]) if os.environ.get("GHOSTTY_REPO") else None
 fish = Path(os.environ["FISH_REPO"]) if os.environ.get("FISH_REPO") else None
@@ -32,6 +34,11 @@ if obsidian:
     scss = "// Generated from shared/palette.json by shared/build-palette.py. Do not edit.\n"
     scss += "".join(f"${k}: {v};\n" for k, v in pal["core"].items())
     (obsidian / "src/lib/_palette.scss").write_text(scss)
+
+if site:
+    scss = "// Generated from palette.json by build-palette.py in Tenebrous. Do not edit.\n"
+    scss += "".join(f"${k}: {v};\n" for k, v in pal["site"].items())
+    (site / "theme/src/_site-palette.scss").write_text(scss)
 
 def fill(m):
     name, _, mod = m.group(1).partition(":")
@@ -58,7 +65,7 @@ def luminance(h):
     return 0.2126 * lin[0] + 0.7152 * lin[1] + 0.0722 * lin[2]
 
 cols, w, h, gap, pad = 5, 176, 96, 12, 24
-groups = [("Core", pal["core"]), ("Zed only", pal["zed"])]
+groups = [("Core", pal["core"]), ("Zed only", pal["zed"]), ("Site only", pal["site"])]
 y = pad
 body = []
 for title, colours in groups:

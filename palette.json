@@ -32,5 +32,13 @@
     "blue-dim": "#5d7fb0",
     "magenta-dim": "#8070b0",
     "cyan-dim": "#4a8f9c"
+  },
+  "site": {
+    "brown": "#b0825a",
+    "edge": "#59607f",
+    "edge-high": "#9aa1c4",
+    "faint-high": "#b4bad8",
+    "text-high": "#d0d5ee",
+    "shadow-line": "#1c202c"
   }
 }

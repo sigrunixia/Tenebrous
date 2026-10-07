@@ -104,9 +104,22 @@ Zed needs an accent for the cursor and focus border, and dimmer shades for the t
 | Terminal dim magenta | magenta-dim | `#8070b0` | 4.44 | Large text and UI only |
 | Terminal dim cyan | cyan-dim | `#4a8f9c` | 5.20 | AA |
 
+### Site only
+
+The Quartz site has a few colors of its own, mostly edges and the contrast boosts for people who ask for more. They are written to the site's `theme/src/_site-palette.scss`. The contrast is against Background.
+
+| Where it shows up | Color | Hex | Contrast | WCAG |
+|---|---|---|---|---|
+| Brown highlight | brown | `#b0825a` | 5.65 | AA |
+| Field and button edge | edge | `#59607f` | 3.11 | UI only |
+| Field and button edge, more contrast | edge-high | `#9aa1c4` | 7.55 | AAA |
+| Faint text, more contrast | faint-high | `#b4bad8` | 10.00 | AAA |
+| Secondary text, more contrast | text-high | `#d0d5ee` | 13.18 | AAA |
+| Sidebar line in the shadow | shadow-line | `#1c202c` | 1.18 | Decoration only |
+
 ## Building
 
-Every color lives in `palette.json`. Run `build.sh` and it writes the Obsidian palette file, the Zed theme and `palette.svg` from it, so a color only ever gets changed in one place.
+Every color lives in `palette.json`. Run `build.sh` and it writes the Obsidian palette file, the site's palette file, the Zed theme and `palette.svg` from it, so a color only ever gets changed in one place.
 
 ```
 ./build.sh --obsidian-theme        # theme.css and snippets

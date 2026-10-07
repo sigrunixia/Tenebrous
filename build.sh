@@ -7,14 +7,15 @@
 #   --obsidian-publish-js   publish.js
 #   --obsidian-push         push publish.css and/or publish.js live, whichever
 #                           were built this run (both if none were)
-#   --site                  tenebrousdragon.com, built with ./build.sh in SITE_REPO.
-#                           It builds public/ only; run wrangler deploy there to go live
+#   --site                  tenebrousdragon.com, built with ./build.sh in SITE_REPO
+#   --site-push             also run wrangler deploy there, which puts the build live.
+#                           Implies --site
 #   --zed                   Zed theme
 #   --ghostty               Ghostty theme
 #   --fish                  fish theme
 #   --starship              Starship config
 #   --fzf                   fzf colours, deployed to ~/.config/tenebrous/fzf-colors
-#   --all                   everything above except --site and --obsidian-push
+#   --all                   everything above except --site, --site-push and --obsidian-push
 #   --build-only            build, deploy and push nothing
 set -euo pipefail
 
@@ -37,6 +38,7 @@ PUB_CSS=0
 PUB_JS=0
 PUSH=0
 SITE=0
+SITE_PUSH=0
 ZED=0
 GHOSTTY=0
 FISH=0
@@ -50,6 +52,7 @@ for arg in "$@"; do
     --obsidian-publish-js)  PUB_JS=1 ;;
     --obsidian-push)        PUSH=1 ;;
     --site)                 SITE=1 ;;
+    --site-push)            SITE=1; SITE_PUSH=1 ;;
     --zed)                  ZED=1 ;;
     --ghostty)              GHOSTTY=1 ;;
     --fish)                 FISH=1 ;;
@@ -59,7 +62,7 @@ for arg in "$@"; do
     --build-only)           DEPLOY=0 ;;
     *)
       echo "Unknown option: $arg" >&2
-      echo "Usage: build.sh [--obsidian-theme] [--obsidian-publish-css] [--obsidian-publish-js] [--obsidian-push] [--site] [--zed] [--ghostty] [--fish] [--starship] [--fzf] [--all] [--build-only]" >&2
+      echo "Usage: build.sh [--obsidian-theme] [--obsidian-publish-css] [--obsidian-publish-js] [--obsidian-push] [--site] [--site-push] [--zed] [--ghostty] [--fish] [--starship] [--fzf] [--all] [--build-only]" >&2
       exit 2 ;;
   esac
 done
@@ -71,6 +74,11 @@ fi
 
 if [ "$PUSH" = 1 ] && [ "$DEPLOY" = 0 ]; then
   echo "--obsidian-push cannot be combined with --build-only." >&2
+  exit 2
+fi
+
+if [ "$SITE_PUSH" = 1 ] && [ "$DEPLOY" = 0 ]; then
+  echo "--site-push cannot be combined with --build-only." >&2
   exit 2
 fi
 
@@ -142,9 +150,13 @@ fi
 
 if [ "$SITE" = 1 ]; then
   # The site compiles the shared partials from the Obsidian repo, so build it
-  # after the palette above. Deploying is a separate step (wrangler deploy).
+  # after the palette above. It only goes live with --site-push.
   (cd "$SITE_REPO" && THEME_DIR="$OBSIDIAN_REPO" ./build.sh)
   echo "Built $SITE_REPO/public"
+  if [ "$SITE_PUSH" = 1 ]; then
+    (cd "$SITE_REPO" && wrangler deploy)
+    echo "Deployed the site"
+  fi
 fi
 
 if [ "$PUSH" = 1 ]; then

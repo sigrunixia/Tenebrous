@@ -5,36 +5,52 @@
   <zed>/themes/tenebrous.json    templates/zed.template.json with {{name}} and
                                  {{name:AA}} (alpha hex suffix) filled in
 
+  <ghostty>/Tenebrous            Ghostty theme from templates/ghostty.template
+  <fish>/Tenebrous.theme         fish theme from templates/fish.template
+  <starship>/starship.toml       Starship config from templates/starship.template
+  ./fzf-colors                   fzf --color option string from templates/fzf.template
+                                 ({{name:bare}} writes the hex without the leading #)
+
   palette.svg                    swatch image of every colour, shown in the README
 
-Repo paths come from OBSIDIAN_REPO and ZED_REPO, set in .env and passed by build.sh.
+Repo paths come from OBSIDIAN_REPO, ZED_REPO, GHOSTTY_REPO, FISH_REPO and STARSHIP_REPO, set in .env and passed by build.sh.
 """
 import os
 import json, re, sys
 from pathlib import Path
 
 root = Path(__file__).resolve().parent
-try:
-    obsidian = Path(os.environ["OBSIDIAN_REPO"])
-    zed = Path(os.environ["ZED_REPO"])
-except KeyError as e:
-    sys.exit(f"{e.args[0]} is not set. Run this through build.sh, or set it in .env.")
+obsidian = Path(os.environ["OBSIDIAN_REPO"]) if os.environ.get("OBSIDIAN_REPO") else None
+zed = Path(os.environ["ZED_REPO"]) if os.environ.get("ZED_REPO") else None
+ghostty = Path(os.environ["GHOSTTY_REPO"]) if os.environ.get("GHOSTTY_REPO") else None
+fish = Path(os.environ["FISH_REPO"]) if os.environ.get("FISH_REPO") else None
+starship = Path(os.environ["STARSHIP_REPO"]) if os.environ.get("STARSHIP_REPO") else None
 pal = json.loads((root / "palette.json").read_text())
 flat = {k: v for g in pal.values() for k, v in g.items()}
 
-scss = "// Generated from shared/palette.json by shared/build-palette.py. Do not edit.\n"
-scss += "".join(f"${k}: {v};\n" for k, v in pal["core"].items())
-(obsidian / "src/lib/_palette.scss").write_text(scss)
+if obsidian:
+    scss = "// Generated from shared/palette.json by shared/build-palette.py. Do not edit.\n"
+    scss += "".join(f"${k}: {v};\n" for k, v in pal["core"].items())
+    (obsidian / "src/lib/_palette.scss").write_text(scss)
 
 def fill(m):
-    name, _, alpha = m.group(1).partition(":")
+    name, _, mod = m.group(1).partition(":")
     if name not in flat:
         sys.exit(f"Unknown palette colour: {name}")
-    return flat[name] + alpha
+    return flat[name][1:] if mod == "bare" else flat[name] + mod
 
-tpl = (root / "templates/zed.template.json").read_text()
-(zed / "themes").mkdir(exist_ok=True)
-(zed / "themes/tenebrous.json").write_text(re.sub(r"\{\{([^}]+)\}\}", fill, tpl))
+if zed:
+    tpl = (root / "templates/zed.template.json").read_text()
+    (zed / "themes").mkdir(exist_ok=True)
+    (zed / "themes/tenebrous.json").write_text(re.sub(r"\{\{([^}]+)\}\}", fill, tpl))
+
+for tpl_name, repo, out in (("ghostty.template", ghostty, "Tenebrous"), ("fish.template", fish, "Tenebrous.theme"), ("starship.template", starship, "starship.toml")):
+    if not repo:
+        continue
+    dest = repo / out
+    dest.write_text(re.sub(r"\{\{([^}]+)\}\}", fill, (root / "templates" / tpl_name).read_text()))
+
+(root / "fzf-colors").write_text(re.sub(r"\{\{([^}]+)\}\}", fill, (root / "templates/fzf.template").read_text()) + "\n")
 
 def luminance(h):
     r, g, b = (int(h[i:i + 2], 16) / 255 for i in (1, 3, 5))

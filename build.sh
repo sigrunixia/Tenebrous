@@ -8,6 +8,10 @@
 #   --obsidian-push         push publish.css and/or publish.js live, whichever
 #                           were built this run (both if none were)
 #   --zed                   Zed theme
+#   --ghostty               Ghostty theme
+#   --fish                  fish theme
+#   --starship              Starship config
+#   --fzf                   fzf colours, deployed to ~/.config/tenebrous/fzf-colors
 #   --all                   everything above except --obsidian-push
 #   --build-only            build, deploy and push nothing
 set -euo pipefail
@@ -31,6 +35,10 @@ PUB_CSS=0
 PUB_JS=0
 PUSH=0
 ZED=0
+GHOSTTY=0
+FISH=0
+STARSHIP=0
+FZF=0
 DEPLOY=1
 for arg in "$@"; do
   case "$arg" in
@@ -39,16 +47,20 @@ for arg in "$@"; do
     --obsidian-publish-js)  PUB_JS=1 ;;
     --obsidian-push)        PUSH=1 ;;
     --zed)                  ZED=1 ;;
-    --all)                  THEME=1; PUB_CSS=1; PUB_JS=1; ZED=1 ;;
+    --ghostty)              GHOSTTY=1 ;;
+    --fish)                 FISH=1 ;;
+    --starship)             STARSHIP=1 ;;
+    --fzf)                  FZF=1 ;;
+    --all)                  THEME=1; PUB_CSS=1; PUB_JS=1; ZED=1; GHOSTTY=1; FISH=1; STARSHIP=1; FZF=1 ;;
     --build-only)           DEPLOY=0 ;;
     *)
       echo "Unknown option: $arg" >&2
-      echo "Usage: build.sh [--obsidian-theme] [--obsidian-publish-css] [--obsidian-publish-js] [--obsidian-push] [--zed] [--all] [--build-only]" >&2
+      echo "Usage: build.sh [--obsidian-theme] [--obsidian-publish-css] [--obsidian-publish-js] [--obsidian-push] [--zed] [--ghostty] [--fish] [--starship] [--fzf] [--all] [--build-only]" >&2
       exit 2 ;;
   esac
 done
 
-if [ $((THEME + PUB_CSS + PUB_JS + PUSH + ZED)) = 0 ]; then
+if [ $((THEME + PUB_CSS + PUB_JS + PUSH + ZED + GHOSTTY + FISH + STARSHIP + FZF)) = 0 ]; then
   echo "Nothing to do. Pass at least one flag, or --all." >&2
   exit 2
 fi
@@ -71,9 +83,12 @@ deploy_check() {
   fi
 }
 
-if [ $((THEME + PUB_CSS + ZED)) -gt 0 ]; then
-  need OBSIDIAN_REPO
-  need ZED_REPO
+if [ $((THEME + PUB_CSS + ZED + GHOSTTY + FISH + STARSHIP + FZF)) -gt 0 ]; then
+  if [ $((THEME + PUB_CSS)) -gt 0 ]; then need OBSIDIAN_REPO; fi
+  if [ "$ZED" = 1 ]; then need ZED_REPO; fi
+  if [ "$GHOSTTY" = 1 ]; then need GHOSTTY_REPO; fi
+  if [ "$FISH" = 1 ]; then need FISH_REPO; fi
+  if [ "$STARSHIP" = 1 ]; then need STARSHIP_REPO; fi
   python3 "$HERE/build-palette.py"
   echo "Generated palette files from palette.json"
 fi
@@ -139,5 +154,44 @@ if [ "$ZED" = 1 ]; then
     mkdir -p "$ZED_THEMES"
     cp "$ZED_REPO/themes/tenebrous.json" "$ZED_THEMES/tenebrous.json"
     echo "Deployed to $ZED_THEMES"
+  fi
+fi
+
+if [ "$GHOSTTY" = 1 ]; then
+  echo "Built $GHOSTTY_REPO/Tenebrous"
+  if [ "$DEPLOY" = 1 ]; then
+    dir="${GHOSTTY_THEMES:-$HOME/.config/ghostty/themes}"
+    mkdir -p "$dir"
+    cp "$GHOSTTY_REPO/Tenebrous" "$dir/Tenebrous"
+    echo "Deployed to $dir"
+  fi
+fi
+
+if [ "$FISH" = 1 ]; then
+  echo "Built $FISH_REPO/Tenebrous.theme"
+  if [ "$DEPLOY" = 1 ]; then
+    dir="${FISH_THEMES:-$HOME/.config/fish/themes}"
+    mkdir -p "$dir"
+    cp "$FISH_REPO/Tenebrous.theme" "$dir/Tenebrous.theme"
+    echo "Deployed to $dir"
+  fi
+fi
+
+if [ "$STARSHIP" = 1 ]; then
+  echo "Built $STARSHIP_REPO/starship.toml"
+  if [ "$DEPLOY" = 1 ]; then
+    dest="${STARSHIP_CONFIG:-$HOME/.config/starship.toml}"
+    cp "$STARSHIP_REPO/starship.toml" "$dest"
+    echo "Deployed to $dest"
+  fi
+fi
+
+if [ "$FZF" = 1 ]; then
+  echo "Built $HERE/fzf-colors"
+  if [ "$DEPLOY" = 1 ]; then
+    dir="${FZF_COLORS_DIR:-$HOME/.config/tenebrous}"
+    mkdir -p "$dir"
+    cp "$HERE/fzf-colors" "$dir/fzf-colors"
+    echo "Deployed to $dir"
   fi
 fi

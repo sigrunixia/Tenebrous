@@ -8,6 +8,9 @@ Tenebrous was initially inspired by [Poimandres](https://github.com/drcmda/poima
 
 - [Tenebrous Obsidian](https://github.com/sigrunixia/Tenebrous-Obsidian), the theme for [Obsidian](https://obsidian.md/).
 - [Tenebrous Zed](https://github.com/sigrunixia/Tenebrous-Zed), the theme for [Zed](https://zed.dev/).
+- [Tenebrous Ghostty](https://github.com/sigrunixia/Tenebrous-Ghostty), the theme for [Ghostty](https://ghostty.org/).
+- [Tenebrous Fish](https://github.com/sigrunixia/Tenebrous-Fish), the theme for [fish](https://fishshell.com/).
+- [Tenebrous Starship](https://github.com/sigrunixia/Tenebrous-Starship), the config for the [Starship](https://starship.rs/) prompt.
 
 ## Colors
 
@@ -111,13 +114,17 @@ Every color lives in `palette.json`. Run `build.sh` and it writes the Obsidian p
 ./build.sh --obsidian-publish-js   # publish.js
 ./build.sh --obsidian-push         # push publish.css and/or publish.js live
 ./build.sh --zed                   # Zed theme
+./build.sh --ghostty               # Ghostty theme
+./build.sh --fish                  # fish theme
+./build.sh --starship              # Starship config
+./build.sh --fzf                   # fzf colours
 ./build.sh --all                   # everything except the push
 ./build.sh --build-only            # build without deploying
 ```
 
 Flags stack, so `./build.sh --obsidian-publish-css --obsidian-push` builds publish.css and pushes just that.
 
-Copy `.env.example` to `.env` and point it at your repos and vault. The script reads it every run. Change the Zed template, not the Zed theme it spits out, because the next build writes over it.
+Copy `.env.example` to `.env` and point it at your repos and vault. The script reads it every run. Set `GHOSTTY_REPO`, `FISH_REPO` and `STARSHIP_REPO` for those. Starship deploys to `~/.config/starship.toml`, or `STARSHIP_CONFIG` if set, and overwrites it. The fzf colors build to `fzf-colors` and deploy to `~/.config/tenebrous/fzf-colors`, which `config.fish` and `.zshrc` read into `FZF_DEFAULT_OPTS`. Ghostty and fish deploy to `~/.config/ghostty/themes` and `~/.config/fish/themes`, or to `GHOSTTY_THEMES` and `FISH_THEMES` if you set those. Change the Zed template, not the Zed theme it spits out, because the next build writes over it.
 
 ## Special thanks
 

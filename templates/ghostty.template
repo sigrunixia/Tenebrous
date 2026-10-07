@@ -1,0 +1,24 @@
+# Tenebrous for Ghostty. Generated from palette.json, edit templates/ghostty.template instead.
+palette = 0={{bg-highlight}}
+palette = 1={{red}}
+palette = 2={{green}}
+palette = 3={{amber}}
+palette = 4={{blue0}}
+palette = 5={{magenta}}
+palette = 6={{teal}}
+palette = 7={{fg}}
+palette = 8={{comment}}
+palette = 9={{red1}}
+palette = 10={{lime}}
+palette = 11={{yellow}}
+palette = 12={{cyan}}
+palette = 13={{pink}}
+palette = 14={{cyan}}
+palette = 15={{silver}}
+background = {{bg}}
+foreground = {{fg}}
+cursor-color = {{amber}}
+cursor-text = {{bg}}
+selection-background = {{bg-highlight}}
+selection-foreground = {{silver}}
+split-divider-color = {{bg-highlight}}

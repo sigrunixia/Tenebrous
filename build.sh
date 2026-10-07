@@ -7,12 +7,14 @@
 #   --obsidian-publish-js   publish.js
 #   --obsidian-push         push publish.css and/or publish.js live, whichever
 #                           were built this run (both if none were)
+#   --site                  tenebrousdragon.com, built with ./build.sh in SITE_REPO.
+#                           It builds public/ only; run wrangler deploy there to go live
 #   --zed                   Zed theme
 #   --ghostty               Ghostty theme
 #   --fish                  fish theme
 #   --starship              Starship config
 #   --fzf                   fzf colours, deployed to ~/.config/tenebrous/fzf-colors
-#   --all                   everything above except --obsidian-push
+#   --all                   everything above except --site and --obsidian-push
 #   --build-only            build, deploy and push nothing
 set -euo pipefail
 
@@ -34,6 +36,7 @@ THEME=0
 PUB_CSS=0
 PUB_JS=0
 PUSH=0
+SITE=0
 ZED=0
 GHOSTTY=0
 FISH=0
@@ -46,6 +49,7 @@ for arg in "$@"; do
     --obsidian-publish-css) PUB_CSS=1 ;;
     --obsidian-publish-js)  PUB_JS=1 ;;
     --obsidian-push)        PUSH=1 ;;
+    --site)                 SITE=1 ;;
     --zed)                  ZED=1 ;;
     --ghostty)              GHOSTTY=1 ;;
     --fish)                 FISH=1 ;;
@@ -55,12 +59,12 @@ for arg in "$@"; do
     --build-only)           DEPLOY=0 ;;
     *)
       echo "Unknown option: $arg" >&2
-      echo "Usage: build.sh [--obsidian-theme] [--obsidian-publish-css] [--obsidian-publish-js] [--obsidian-push] [--zed] [--ghostty] [--fish] [--starship] [--fzf] [--all] [--build-only]" >&2
+      echo "Usage: build.sh [--obsidian-theme] [--obsidian-publish-css] [--obsidian-publish-js] [--obsidian-push] [--site] [--zed] [--ghostty] [--fish] [--starship] [--fzf] [--all] [--build-only]" >&2
       exit 2 ;;
   esac
 done
 
-if [ $((THEME + PUB_CSS + PUB_JS + PUSH + ZED + GHOSTTY + FISH + STARSHIP + FZF)) = 0 ]; then
+if [ $((THEME + PUB_CSS + PUB_JS + PUSH + SITE + ZED + GHOSTTY + FISH + STARSHIP + FZF)) = 0 ]; then
   echo "Nothing to do. Pass at least one flag, or --all." >&2
   exit 2
 fi
@@ -83,8 +87,9 @@ deploy_check() {
   fi
 }
 
-if [ $((THEME + PUB_CSS + ZED + GHOSTTY + FISH + STARSHIP + FZF)) -gt 0 ]; then
-  if [ $((THEME + PUB_CSS)) -gt 0 ]; then need OBSIDIAN_REPO; fi
+if [ $((THEME + PUB_CSS + SITE + ZED + GHOSTTY + FISH + STARSHIP + FZF)) -gt 0 ]; then
+  if [ $((THEME + PUB_CSS + SITE)) -gt 0 ]; then need OBSIDIAN_REPO; fi
+  if [ "$SITE" = 1 ]; then need SITE_REPO; fi
   if [ "$ZED" = 1 ]; then need ZED_REPO; fi
   if [ "$GHOSTTY" = 1 ]; then need GHOSTTY_REPO; fi
   if [ "$FISH" = 1 ]; then need FISH_REPO; fi
@@ -133,6 +138,13 @@ if [ "$PUB_JS" = 1 ]; then
     cp "$OBSIDIAN_REPO/publish.js" "$VAULT/publish.js"
     echo "Deployed publish.js to $VAULT"
   fi
+fi
+
+if [ "$SITE" = 1 ]; then
+  # The site compiles the shared partials from the Obsidian repo, so build it
+  # after the palette above. Deploying is a separate step (wrangler deploy).
+  (cd "$SITE_REPO" && THEME_DIR="$OBSIDIAN_REPO" ./build.sh)
+  echo "Built $SITE_REPO/public"
 fi
 
 if [ "$PUSH" = 1 ]; then

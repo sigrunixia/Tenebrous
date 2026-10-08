@@ -40,7 +40,7 @@ The contrast here is Text (`#c3c9e6`) sitting on each surface.
 | Muted text, punctuation and code comments | text-dim | `#a6accd` | 8.58 | AAA |
 | Faint text, placeholders and line numbers | text-faint | `#8c92b6` | 6.30 | AA |
 | Bright text | silver | `#e2e7f2` | 15.47 | AAA |
-| Nav item hover | unknown | `#ffffff` | 19.17 | AAA |
+| Nav item hover | silver | `#e2e7f2` | 15.47 | AAA |
 
 ### Headings and links
 
@@ -54,7 +54,7 @@ The contrast here is Text (`#c3c9e6`) sitting on each surface.
 | Header 6 | silver | `#e2e7f2` | 15.47 | AAA |
 | Bold | blue | `#7aa6e6` | 7.69 | AAA |
 | Italic | amber | `#f0b04a` | 10.05 | AAA |
-| Links | amber0 | `#e8a955` | 9.34 | AAA |
+| Links | amber | `#f0b04a` | 10.05 | AAA |
 | Link hover | amber | `#f0b04a` | 10.05 | AAA |
 
 ### Code
@@ -64,14 +64,14 @@ The contrast here is Text (`#c3c9e6`) sitting on each surface.
 | Keyword | purple | `#a894e8` | 7.36 | AAA |
 | Function | amber | `#f0b04a` | 10.05 | AAA |
 | String | green | `#5de4c7` | 12.22 | AAA |
-| Secondary string and escapes | green0 | `#5fb3a1` | 7.71 | AAA |
+| Secondary string and escapes | green | `#5de4c7` | 12.22 | AAA |
 | Number | pink | `#f087bd` | 8.13 | AAA |
 | Property and attribute | cyan | `#89ddff` | 12.64 | AAA |
 | Operator and parameter | teal | `#5fb8c8` | 8.38 | AAA |
 | Type and built-in | blue | `#7aa6e6` | 7.69 | AAA |
 | Tag, boolean and constant | red | `#e47461` | 6.36 | AA |
 | Value | yellow | `#fffac2` | 17.99 | AAA |
-| URL | amber0 | `#e8a955` | 9.34 | AAA |
+| URL | amber | `#f0b04a` | 10.05 | AAA |
 
 ### Callouts and status
 
@@ -87,9 +87,9 @@ The contrast here is Text (`#c3c9e6`) sitting on each surface.
 | Question | yellow | `#fffac2` | 17.99 | AAA |
 | Warning | orange | `#f5a04a` | 9.14 | AAA |
 | Error | red | `#e47461` | 6.36 | AA |
-| Deleted lines and error messages | red1 | `#f07a62` | 7.00 | AA |
-| Fail | crimson | `#df6d7f` | 6.05 | AA |
-| Bug | rose | `#d370a3` | 6.04 | AA |
+| Deleted lines and error messages | red | `#e47461` | 6.36 | AA |
+| Fail | red | `#e47461` | 6.36 | AA |
+| Bug | pink | `#f087bd` | 8.13 | AAA |
 | Example | purple | `#a894e8` | 7.36 | AAA |
 
 ### Zed only

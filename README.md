@@ -8,9 +8,6 @@ Tenebrous was initially inspired by [Poimandres](https://github.com/drcmda/poima
 
 - [Tenebrous Obsidian](https://github.com/sigrunixia/Tenebrous-Obsidian), the theme for [Obsidian](https://obsidian.md/).
 - [Tenebrous Zed](https://github.com/sigrunixia/Tenebrous-Zed), the theme for [Zed](https://zed.dev/).
-- [Tenebrous Ghostty](https://github.com/sigrunixia/Tenebrous-Ghostty), the theme for [Ghostty](https://ghostty.org/).
-- [Tenebrous Fish](https://github.com/sigrunixia/Tenebrous-Fish), the theme for [fish](https://fishshell.com/).
-- [Tenebrous Starship](https://github.com/sigrunixia/Tenebrous-Starship), the config for the [Starship](https://starship.rs/) prompt.
 
 ## Colors
 

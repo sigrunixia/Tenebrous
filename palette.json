@@ -7,15 +7,13 @@
     "text": "#c3c9e6",
     "text-dim": "#a6accd",
     "text-faint": "#8c92b6",
+    "accent": "#3980c6",
     "blue": "#7aa6e6",
     "amber": "#f0b04a",
-    "amber-dim": "#e8a955",
     "purple": "#a894e8",
     "teal": "#5fb8c8",
     "green": "#5de4c7",
-    "green-dim": "#5fb3a1",
     "red": "#e47461",
-    "red-bright": "#f07a62",
     "orange": "#f5a04a",
     "cyan": "#89ddff",
     "lime": "#a8d86e",
@@ -23,19 +21,9 @@
     "yellow": "#fffac2",
     "silver": "#e2e7f2"
   },
-  "zed": {
-    "accent": "#3980c6",
-    "red-dim": "#a8473a",
-    "blue-dim": "#5d7fb0",
-    "purple-dim": "#8070b0",
-    "cyan-dim": "#4a8f9c"
-  },
-  "site": {
-    "brown": "#b0825a",
-    "edge": "#59607f",
-    "edge-high": "#9aa1c4",
-    "faint-high": "#b4bad8",
-    "text-high": "#d0d5ee",
-    "shadow-line": "#1c202c"
+  "terminal": {
+    "red-bright": "#f07a62",
+    "amber-dim": "#e8a955",
+    "green-dim": "#5fb3a1"
   }
 }

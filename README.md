@@ -92,46 +92,43 @@ The contrast here is Text (`#c3c9e6`) sitting on each surface.
 | Bug | pink | `#f087bd` | 8.13 | AAA |
 | Example | purple | `#a894e8` | 7.36 | AAA |
 
-### Zed only
+### Accent
 
-Zed needs an accent for the cursor and focus border, and dimmer shades for the terminal. These are interface and terminal colors, so the contrast is against Background.
-
-| Where it shows up | Color | Hex | Contrast | WCAG |
-|---|---|---|---|---|
-| Cursor and focus border | accent | `#3980c6` | 4.63 | AA |
-| Terminal dim red | red-dim | `#a8473a` | 3.31 | Large text and UI only |
-| Terminal dim blue | blue-dim | `#5d7fb0` | 4.68 | AA |
-| Terminal dim magenta | purple-dim | `#8070b0` | 4.44 | Large text and UI only |
-| Terminal dim cyan | cyan-dim | `#4a8f9c` | 5.20 | AA |
-
-### Site only
-
-The Quartz site has a few colors of its own, mostly edges and the contrast boosts for people who ask for more. They are written to the site's `theme/src/_site-palette.scss`. The contrast is against Background.
+The accent is the blue behind the cursor and focus border in Zed, and it matches the accent Obsidian builds its own interface shades from (`hsl(210, 55%, 50%)`). The contrast is against Background.
 
 | Where it shows up | Color | Hex | Contrast | WCAG |
 |---|---|---|---|---|
-| Brown highlight | brown | `#b0825a` | 5.65 | AA |
-| Field and button edge | edge | `#59607f` | 3.11 | UI only |
-| Field and button edge, more contrast | edge-high | `#9aa1c4` | 7.55 | AAA |
-| Faint text, more contrast | faint-high | `#b4bad8` | 10.00 | AAA |
-| Secondary text, more contrast | text-high | `#d0d5ee` | 13.18 | AAA |
-| Sidebar line in the shadow | shadow-line | `#1c202c` | 1.18 | Decoration only |
+| Cursor, focus border and Obsidian's accent | accent | `#3980c6` | 4.63 | AA |
+
+### Terminals
+
+A terminal wants a normal and a bright or dim version of some colors, and the Obsidian theme does not, so these three are only used by the Zed, Ghostty, fish and Starship themes.
+
+| Where it shows up | Color | Hex | Contrast | WCAG |
+|---|---|---|---|---|
+| Terminal bright red | red-bright | `#f07a62` | 7.00 | AA |
+| Terminal dim amber | amber-dim | `#e8a955` | 9.34 | AAA |
+| Terminal dim green | green-dim | `#5fb3a1` | 7.71 | AAA |
+
+The dim shades only Zed uses are in [Tenebrous-Zed](https://github.com/sigrunixia/Tenebrous-Zed), and the colors only the Quartz site uses are in [Tenebrous-Site](https://github.com/sigrunixia/Tenebrous-Site).
 
 ## Building
 
-Every color lives in `palette.json`. Run `build.sh` and it writes the Obsidian palette file, the site's palette file, the Zed theme and `palette.svg` from it, so a color only ever gets changed in one place.
+Every color lives in `palette.json`. Run `build.sh` and it writes the Obsidian palette file, the Zed, Ghostty, fish and Starship themes, the fzf colors and `palette.svg` from it, so a color only ever gets changed in one place.
 
 ```
 ./build.sh --obsidian-theme        # theme.css and snippets
 ./build.sh --obsidian-publish-css  # publish.css
 ./build.sh --obsidian-publish-js   # publish.js
 ./build.sh --obsidian-push         # push publish.css and/or publish.js live
+./build.sh --site                  # build the Quartz site
+./build.sh --site-push             # build the site and deploy it
 ./build.sh --zed                   # Zed theme
 ./build.sh --ghostty               # Ghostty theme
 ./build.sh --fish                  # fish theme
 ./build.sh --starship              # Starship config
 ./build.sh --fzf                   # fzf colours
-./build.sh --all                   # everything except the push
+./build.sh --all                   # everything except the pushes and the site
 ./build.sh --build-only            # build without deploying
 ```
 

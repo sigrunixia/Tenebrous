@@ -1,1 +1,1 @@
---color=fg:{{fg}},bg:-1,hl:{{amber}},fg+:{{silver}},bg+:{{bg-highlight}},hl+:{{amber}},info:{{comment}},prompt:{{magenta}},pointer:{{amber}},marker:{{green}},spinner:{{teal}},header:{{blue0}},border:{{bg-highlight}},gutter:-1,query:{{silver}}
+--color=fg:{{text}},bg:-1,hl:{{amber}},fg+:{{silver}},bg+:{{bg-highlight}},hl+:{{amber}},info:{{text-faint}},prompt:{{purple}},pointer:{{amber}},marker:{{green}},spinner:{{teal}},header:{{blue}},border:{{bg-highlight}},gutter:-1,query:{{silver}}

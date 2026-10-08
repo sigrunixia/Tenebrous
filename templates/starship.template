@@ -91,10 +91,10 @@ style = "red1"
 format = "via [$symbol($version )]($style)"
 
 [palettes.tenebrous]
-blue0 = "{{blue0}}"
-magenta = "{{magenta}}"
+blue0 = "{{blue}}"
+magenta = "{{purple}}"
 amber = "{{amber}}"
-fg-dark = "{{fg-dark}}"
+fg-dark = "{{text-dim}}"
 green = "{{green}}"
 teal = "{{teal}}"
 cyan = "{{cyan}}"

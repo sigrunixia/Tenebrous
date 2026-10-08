@@ -3,11 +3,11 @@ palette = 0={{bg-highlight}}
 palette = 1={{red}}
 palette = 2={{green}}
 palette = 3={{amber}}
-palette = 4={{blue0}}
-palette = 5={{magenta}}
+palette = 4={{blue}}
+palette = 5={{purple}}
 palette = 6={{teal}}
-palette = 7={{fg}}
-palette = 8={{comment}}
+palette = 7={{text}}
+palette = 8={{text-faint}}
 palette = 9={{red1}}
 palette = 10={{lime}}
 palette = 11={{yellow}}
@@ -16,7 +16,7 @@ palette = 13={{pink}}
 palette = 14={{cyan}}
 palette = 15={{silver}}
 background = {{bg}}
-foreground = {{fg}}
+foreground = {{text}}
 cursor-color = {{amber}}
 cursor-text = {{bg}}
 selection-background = {{bg-highlight}}

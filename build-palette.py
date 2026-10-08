@@ -17,7 +17,7 @@
 Repo paths come from OBSIDIAN_REPO, ZED_REPO, GHOSTTY_REPO, FISH_REPO and STARSHIP_REPO, set in .env and passed by build.sh.
 """
 import os
-import json, re, sys
+import json, math, re, sys
 from pathlib import Path
 
 root = Path(__file__).resolve().parent
@@ -26,7 +26,27 @@ zed = Path(os.environ["ZED_REPO"]) if os.environ.get("ZED_REPO") else None
 ghostty = Path(os.environ["GHOSTTY_REPO"]) if os.environ.get("GHOSTTY_REPO") else None
 fish = Path(os.environ["FISH_REPO"]) if os.environ.get("FISH_REPO") else None
 starship = Path(os.environ["STARSHIP_REPO"]) if os.environ.get("STARSHIP_REPO") else None
+def oklch_to_hex(text):
+    """Turn "oklch(L C H)" into a hex colour. A colour outside sRGB loses chroma until it fits."""
+    L, C, H = (float(x) for x in re.match(r"oklch\(\s*([\d.]+)\s+([\d.]+)\s+([\d.]+)\s*\)", text).groups())
+    def rgb(c):
+        a, b = c * math.cos(math.radians(H)), c * math.sin(math.radians(H))
+        l, m, s = (L + 0.3963377774*a + 0.2158037573*b) ** 3, (L - 0.1055613458*a - 0.0638541728*b) ** 3, (L - 0.0894841775*a - 1.2914855480*b) ** 3
+        return (4.0767416621*l - 3.3077115913*m + 0.2309699292*s, -1.2684380046*l + 2.6097574011*m - 0.3413193965*s, -0.0041960863*l - 0.7034186147*m + 1.7076147010*s)
+    lo, hi = 0.0, C
+    if not all(-0.0005 <= x <= 1.0005 for x in rgb(C)):
+        for _ in range(40):
+            mid = (lo + hi) / 2
+            lo, hi = (mid, hi) if all(-0.0005 <= x <= 1.0005 for x in rgb(mid)) else (lo, mid)
+        C = lo
+    enc = lambda x: 12.92 * x if x <= 0.0031308 else 1.055 * max(x, 0) ** (1 / 2.4) - 0.055
+    return "#%02x%02x%02x" % tuple(max(0, min(255, round(enc(x) * 255))) for x in rgb(C))
+
+def hexes(colours):
+    return {k: oklch_to_hex(v) if v.startswith("oklch") else v for k, v in colours.items()}
+
 pal = json.loads((root / "palette.json").read_text())
+pal = {group: hexes(colours) for group, colours in pal.items()}
 flat = {k: v for g in pal.values() for k, v in g.items()}
 
 if obsidian:

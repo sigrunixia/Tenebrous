@@ -114,7 +114,7 @@ The dim shades only Zed uses are in [Tenebrous-Zed](https://github.com/sigrunixi
 
 ## Building
 
-Every color lives in `palette.json`. Run `build.sh` and it writes the Obsidian palette file, the Zed, Ghostty, fish and Starship themes, the fzf colors and `palette.svg` from it, so a color only ever gets changed in one place.
+Every color lives in `palette.json`, written as an OKLCH value (lightness, chroma and hue), which keeps colors of the same lightness looking equally bright. The build turns each one into the hex that the themes need. Run `build.sh` and it writes the Obsidian palette file, the Zed, Ghostty, fish and Starship themes, the fzf colors and `palette.svg` from it, so a color only ever gets changed in one place.
 
 ```
 ./build.sh --obsidian-theme        # theme.css and snippets

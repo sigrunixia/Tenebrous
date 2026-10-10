@@ -151,8 +151,8 @@ fi
 if [ "$SITE" = 1 ]; then
   # The site compiles the shared partials from the Obsidian repo, so build it
   # after the palette above. It only goes live with --site-push.
-  (cd "$SITE_REPO" && THEME_DIR="$OBSIDIAN_REPO" ./build.sh)
-  echo "Built $SITE_REPO/public"
+  (cd "$SITE_REPO" && THEME_DIR="$OBSIDIAN_REPO" ./sync.sh && THEME_DIR="$OBSIDIAN_REPO" ./build.sh)
+  echo "Built $SITE_REPO/_site"
   if [ "$SITE_PUSH" = 1 ]; then
     (cd "$SITE_REPO" && wrangler deploy)
     echo "Deployed the site"
